@@ -1,6 +1,7 @@
 use std::env;
 use std::fs;
 use std::process;
+use std::error::Error;
 
 fn main() {
     //read command line arguments and collect the values into a vector
@@ -19,9 +20,10 @@ fn main() {
     run(config);
 }
 
-fn run(config: Config) {
-    let content = fs::read_to_string(config.file_path).expect("Error reading file");
+fn run(config: Config) -> Result<(), Box<dyn Error>>{
+    let content = fs::read_to_string(config.file_path)?;
     println!("With text:\n{content}");
+    Ok(())
 }
 
 struct Config {
