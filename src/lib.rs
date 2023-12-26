@@ -20,6 +20,20 @@ impl Config {
 
 pub fn run(config: Config) -> Result<(), Box<dyn Error>>{
     let content = fs::read_to_string(config.file_path)?;
-    println!("With text:\n{content}");
+    for line in search(&config.query, &content) {
+        println!("{line}");
+    }
     Ok(())
+}
+
+//Rust has a helpful method to handle line-by-line iteration of strings, conveniently named lines
+
+pub fn search<'a>(query: &str, content: &'a str) -> Vec<&'a str> {
+    let mut results = Vec::new();
+    for line in content.lines() {
+        if line.contains(query) {
+            results.push(line);
+        }
+    }
+    results
 }
