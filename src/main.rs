@@ -3,12 +3,10 @@ use std::process;
 use minigrep::Config;
 
 fn main() {
-    //read command line arguments and collect the values into a vector
-    let args: Vec<String> = env::args().collect();
-
     //passing a reference to args
     //handling an error if our Config build function fails and display readable error message to end user
-    let config = Config::build(&args).unwrap_or_else(|err| {
+    //env::args returns an interator, so we're passing ownsership of the iteratorn to config::build directly
+    let config = Config::build(env::args()).unwrap_or_else(|err| {
         eprintln!("Problem parsing arguments: {err}");
         process::exit(1);
     });
